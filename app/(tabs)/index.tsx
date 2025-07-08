@@ -126,8 +126,16 @@ function CreativePlan({ planText }: { planText: string }) {
 	);
 }
 
+type Answers = {
+	city?: string;
+	days?: string;
+	place_type?: string;
+	food_type?: string;
+	budget?: string;
+};
+
 export default function HomeScreen() {
-	const [answers, setAnswers] = useState({});
+	const [answers, setAnswers] = useState<Answers>({});
 	const [step, setStep] = useState(0);
 	const [plan, setPlan] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -158,11 +166,11 @@ export default function HomeScreen() {
 		setError('');
 		setPlan('');
 		const request: TravelPlanRequest = {
-			city: answers['city'],
-			place_type: answers['place_type'].toLowerCase(),
-			food_type: answers['food_type'].toLowerCase(),
-			budget: answers['budget'].toLowerCase(),
-			days: parseInt(answers['days'], 10),
+			city: answers['city'] ?? '',
+			place_type: (answers['place_type'] ?? '').toLowerCase(),
+			food_type: (answers['food_type'] ?? '').toLowerCase(),
+			budget: (answers['budget'] ?? '').toLowerCase(),
+			days: parseInt(answers['days'] ?? '0', 10),
 		};
 		try {
 			const result = await fetchTravelPlan(request);
